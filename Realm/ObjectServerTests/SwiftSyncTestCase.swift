@@ -19,19 +19,8 @@
 import XCTest
 import RealmSwift
 
-// MARK: Test case
-
 class SwiftSyncTestCase: RLMSyncTestCase {
-
-    var task: Process?
-
-    /// For testing, make a unique Realm URL of the form "realm://127.0.0.1:9080/~/X",
-    /// where X is either a custom string passed as an argument, or an UUID string.
-    static func uniqueRealmURL(customName: String? = nil) -> URL {
-        return URL(string: "realm://127.0.0.1:9080/~/\(customName ?? UUID().uuidString)")!
-    }
-
-    func executeChild(file: StaticString = #file, line: UInt = #line) {
+    func executeChild(file: StaticString = #filePath, line: UInt = #line) {
         XCTAssert(0 == runChildAndWait(), "Tests in child process failed", file: file, line: line)
     }
 
@@ -74,7 +63,7 @@ class SwiftSyncTestCase: RLMSyncTestCase {
     }
 
     func synchronouslyLogInUser(for credentials: Credentials,
-                                file: StaticString = #file,
+                                file: StaticString = #filePath,
                                 line: UInt = #line) throws -> User {
         let process = isParent ? "parent" : "child"
         var theUser: User?
@@ -98,7 +87,7 @@ class SwiftSyncTestCase: RLMSyncTestCase {
     }
 
     func synchronouslyLogOutUser(_ user: User,
-                                 file: StaticString = #file,
+                                 file: StaticString = #filePath,
                                  line: UInt = #line) throws {
         var theError: Error?
         let ex = expectation(description: "Should log out the user properly")
@@ -127,7 +116,7 @@ class SwiftSyncTestCase: RLMSyncTestCase {
     func checkCount<T: Object>(expected: Int,
                                _ realm: Realm,
                                _ type: T.Type,
-                               file: StaticString = #file,
+                               file: StaticString = #filePath,
                                line: UInt = #line) {
         let actual = realm.objects(type).count
         XCTAssert(actual == expected,

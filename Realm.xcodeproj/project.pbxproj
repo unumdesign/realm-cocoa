@@ -291,10 +291,22 @@
 		49E12CF3245DB7E800359DF1 /* RLMBSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 49E12CF1245DB7E800359DF1 /* RLMBSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49E12CF5245DBF8A00359DF1 /* RLMBSON_Private.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 49E12CF4245DBF8A00359DF1 /* RLMBSON_Private.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
 		49E12CF6245DBF8A00359DF1 /* RLMBSON_Private.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 49E12CF4245DBF8A00359DF1 /* RLMBSON_Private.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
+		532E916F24AA533A003FD9DB /* TimeoutProxyServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532E916E24AA533A003FD9DB /* TimeoutProxyServer.swift */; };
 		534402CE247FCBE100866F32 /* regular_expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49AD39F0244E1A370097500E /* regular_expression.cpp */; };
 		534402D1247FCBFE00866F32 /* mongo_timestamp.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 534402CF247FCBFD00866F32 /* mongo_timestamp.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		534402D2247FCCA300866F32 /* bson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49AD39F2244E1A370097500E /* bson.cpp */; };
 		5346E7322487AC9D00595C68 /* RLMBSONTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5346E7312487AC9D00595C68 /* RLMBSONTests.mm */; };
+		536B7C0C24A4C223006B535D /* dependencies.list in Resources */ = {isa = PBXBuildFile; fileRef = 536B7C0B24A4C223006B535D /* dependencies.list */; };
+		536B7C0E24A509AC006B535D /* proxy.rb in Resources */ = {isa = PBXBuildFile; fileRef = 494566AA246EF031000FD07F /* proxy.rb */; };
+		536B7C1024A509AC006B535D /* setup_baas.rb in Resources */ = {isa = PBXBuildFile; fileRef = 49D9DFC4246C8E48003AD31D /* setup_baas.rb */; };
+		537130C824A9E417001FDBBC /* RealmServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537130C724A9E417001FDBBC /* RealmServer.swift */; };
+		53ECFDAC24AA0C0D00A4CB89 /* assisted_agg in Resources */ = {isa = PBXBuildFile; fileRef = 53ECFDAB24AA0C0D00A4CB89 /* assisted_agg */; };
+		53ECFDAE24AA0C1100A4CB89 /* create_user in Resources */ = {isa = PBXBuildFile; fileRef = 53ECFDAD24AA0C1100A4CB89 /* create_user */; };
+		53ECFDB024AA0C1700A4CB89 /* stitch_server in Resources */ = {isa = PBXBuildFile; fileRef = 53ECFDAF24AA0C1700A4CB89 /* stitch_server */; };
+		53ECFDB224AA0C1B00A4CB89 /* update_doc in Resources */ = {isa = PBXBuildFile; fileRef = 53ECFDB124AA0C1B00A4CB89 /* update_doc */; };
+		53ECFDB624AA0C3F00A4CB89 /* transpiler in Resources */ = {isa = PBXBuildFile; fileRef = 53ECFDB524AA0C3F00A4CB89 /* transpiler */; };
+		53ECFDB824AA0C4900A4CB89 /* test_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 53ECFDB724AA0C4900A4CB89 /* test_config.json */; };
+		53ECFDB924AA0DE500A4CB89 /* libstitch_support.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 53ECFDB324AA0C3500A4CB89 /* libstitch_support.dylib */; };
 		5B77EACE1DCC5614006AB51D /* ObjectiveCSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B77EACD1DCC5614006AB51D /* ObjectiveCSupport.swift */; };
 		5D03FB1F1E0DAFBA007D53EA /* PredicateUtilTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D03FB1E1E0DAFBA007D53EA /* PredicateUtilTests.mm */; };
 		5D03FB201E0DAFBA007D53EA /* PredicateUtilTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D03FB1E1E0DAFBA007D53EA /* PredicateUtilTests.mm */; };
@@ -597,6 +609,13 @@
 			remoteGlobalIDString = 49E57A16245C3F31004AF428;
 			remoteInfo = "Download BaaS";
 		};
+		537689AB24A7DD060008E57B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E8D89B8F1955FC6D00CF2B9A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5D660FCB1BE98C560021E04F;
+			remoteInfo = RealmSwift;
+		};
 		5D6157011BE0A3A100A4BD3F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E8D89B8F1955FC6D00CF2B9A /* Project object */;
@@ -791,7 +810,6 @@
 		3F0543E91C56F71500AA5322 /* realm_coordinator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = realm_coordinator.hpp; sourceTree = "<group>"; };
 		3F0543EA1C56F71500AA5322 /* realm_coordinator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = realm_coordinator.cpp; sourceTree = "<group>"; };
 		3F0543F61C56F78300AA5322 /* external_commit_helper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = external_commit_helper.hpp; sourceTree = "<group>"; };
-		3F0C129220926CAD00D0D6C8 /* admin.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = admin.js; path = Realm/ObjectServerTests/admin.js; sourceTree = "<group>"; };
 		3F0C6ACE23E11FAD00F03A4F /* object_changeset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = object_changeset.cpp; sourceTree = "<group>"; };
 		3F0C6ACF23E11FAD00F03A4F /* object_changeset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = object_changeset.hpp; sourceTree = "<group>"; };
 		3F0F029D1B6FFE610046A4D5 /* KVOTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KVOTests.mm; sourceTree = "<group>"; };
@@ -938,13 +956,22 @@
 		49AD39F3244E1A370097500E /* regular_expression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = regular_expression.hpp; sourceTree = "<group>"; };
 		49AD39F5244E1A370097500E /* max_key.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = max_key.hpp; sourceTree = "<group>"; };
 		49B1965B2448586000B5B852 /* auth_request_client.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = auth_request_client.hpp; path = sync/auth_request_client.hpp; sourceTree = "<group>"; };
-		49D9DFC3246C8E41003AD31D /* run_baas.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; name = run_baas.rb; path = Realm/ObjectServerTests/run_baas.rb; sourceTree = "<group>"; };
 		49D9DFC4246C8E48003AD31D /* setup_baas.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; name = setup_baas.rb; path = Realm/ObjectServerTests/setup_baas.rb; sourceTree = "<group>"; };
 		49E12CEF245DB7CC00359DF1 /* RLMBSON.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RLMBSON.mm; sourceTree = "<group>"; };
 		49E12CF1245DB7E800359DF1 /* RLMBSON.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RLMBSON.h; sourceTree = "<group>"; };
 		49E12CF4245DBF8A00359DF1 /* RLMBSON_Private.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RLMBSON_Private.hpp; sourceTree = "<group>"; };
+		532E916E24AA533A003FD9DB /* TimeoutProxyServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TimeoutProxyServer.swift; path = Realm/ObjectServerTests/TimeoutProxyServer.swift; sourceTree = "<group>"; };
 		534402CF247FCBFD00866F32 /* mongo_timestamp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mongo_timestamp.hpp; sourceTree = "<group>"; };
 		5346E7312487AC9D00595C68 /* RLMBSONTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RLMBSONTests.mm; path = Realm/ObjectServerTests/RLMBSONTests.mm; sourceTree = "<group>"; };
+		536B7C0B24A4C223006B535D /* dependencies.list */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dependencies.list; sourceTree = "<group>"; };
+		537130C724A9E417001FDBBC /* RealmServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RealmServer.swift; path = Realm/ObjectServerTests/RealmServer.swift; sourceTree = "<group>"; };
+		53ECFDAB24AA0C0D00A4CB89 /* assisted_agg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = assisted_agg; path = build/go/src/github.com/10gen/stitch/assisted_agg; sourceTree = "<group>"; };
+		53ECFDAD24AA0C1100A4CB89 /* create_user */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = create_user; path = build/go/src/github.com/10gen/stitch/create_user; sourceTree = "<group>"; };
+		53ECFDAF24AA0C1700A4CB89 /* stitch_server */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = stitch_server; path = build/go/src/github.com/10gen/stitch/stitch_server; sourceTree = "<group>"; };
+		53ECFDB124AA0C1B00A4CB89 /* update_doc */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = update_doc; path = build/go/src/github.com/10gen/stitch/update_doc; sourceTree = "<group>"; };
+		53ECFDB324AA0C3500A4CB89 /* libstitch_support.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libstitch_support.dylib; path = build/go/src/github.com/10gen/stitch/etc/dylib/lib/libstitch_support.dylib; sourceTree = "<group>"; };
+		53ECFDB524AA0C3F00A4CB89 /* transpiler */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = transpiler; path = build/go/src/github.com/10gen/stitch/etc/transpiler/bin/transpiler; sourceTree = "<group>"; };
+		53ECFDB724AA0C4900A4CB89 /* test_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = test_config.json; path = build/go/src/github.com/10gen/stitch/etc/configs/test_config.json; sourceTree = "<group>"; };
 		5B77EACD1DCC5614006AB51D /* ObjectiveCSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCSupport.swift; sourceTree = "<group>"; };
 		5BC537151DD5B8D70055C524 /* ObjectiveCSupportTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCSupportTests.swift; sourceTree = "<group>"; };
 		5D03FB1E1E0DAFBA007D53EA /* PredicateUtilTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PredicateUtilTests.mm; sourceTree = "<group>"; };
@@ -1296,10 +1323,13 @@
 		1AA5AEA21D98CA5300ED8C27 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				53ECFD9C24AA08C700A4CB89 /* Server */,
 				1AA5AE9A1D98A1B000ED8C27 /* Object-Server-Tests-Bridging-Header.h */,
 				3F73BC871E3A876600FE80B6 /* ObjectServerTests-Info.plist */,
 				1AF64DD01DA304A90081EB15 /* RLMUser+ObjectServerTests.h */,
 				1AF64DD11DA304A90081EB15 /* RLMUser+ObjectServerTests.mm */,
+				537130C724A9E417001FDBBC /* RealmServer.swift */,
+				532E916E24AA533A003FD9DB /* TimeoutProxyServer.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1434,6 +1464,20 @@
 				49AD39F5244E1A370097500E /* max_key.hpp */,
 			);
 			path = bson;
+			sourceTree = "<group>";
+		};
+		53ECFD9C24AA08C700A4CB89 /* Server */ = {
+			isa = PBXGroup;
+			children = (
+				53ECFDB724AA0C4900A4CB89 /* test_config.json */,
+				53ECFDB524AA0C3F00A4CB89 /* transpiler */,
+				53ECFDB324AA0C3500A4CB89 /* libstitch_support.dylib */,
+				53ECFDAB24AA0C0D00A4CB89 /* assisted_agg */,
+				53ECFDAD24AA0C1100A4CB89 /* create_user */,
+				53ECFDAF24AA0C1700A4CB89 /* stitch_server */,
+				53ECFDB124AA0C1B00A4CB89 /* update_doc */,
+			);
+			name = Server;
 			sourceTree = "<group>";
 		};
 		5D274C511D6D16BA006FEBB1 /* apple */ = {
@@ -1697,9 +1741,8 @@
 				1AA5AE9F1D98C99500ED8C27 /* SwiftObjectServerTests.swift */,
 				4996EA9F2465C44E003A1F51 /* SwiftBSONTests.swift */,
 				1AA5AE961D989BE000ED8C27 /* SwiftSyncTestCase.swift */,
-				3F0C129220926CAD00D0D6C8 /* admin.js */,
+				536B7C0B24A4C223006B535D /* dependencies.list */,
 				494566AA246EF031000FD07F /* proxy.rb */,
-				49D9DFC3246C8E41003AD31D /* run_baas.rb */,
 				49D9DFC4246C8E48003AD31D /* setup_baas.rb */,
 			);
 			name = "Object Server Tests";
@@ -2210,6 +2253,7 @@
 			dependencies = (
 				49E57A1C245C5B0E004AF428 /* PBXTargetDependency */,
 				E8267FB41D90B79000E001C7 /* PBXTargetDependency */,
+				537689AC24A7DD060008E57B /* PBXTargetDependency */,
 				E8267FB61D90B79000E001C7 /* PBXTargetDependency */,
 			);
 			name = ObjectServerTests;
@@ -2424,6 +2468,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				536B7C0C24A4C223006B535D /* dependencies.list in Resources */,
+				53ECFDAE24AA0C1100A4CB89 /* create_user in Resources */,
+				53ECFDB024AA0C1700A4CB89 /* stitch_server in Resources */,
+				536B7C0E24A509AC006B535D /* proxy.rb in Resources */,
+				53ECFDAC24AA0C0D00A4CB89 /* assisted_agg in Resources */,
+				536B7C1024A509AC006B535D /* setup_baas.rb in Resources */,
+				53ECFDB624AA0C3F00A4CB89 /* transpiler in Resources */,
+				53ECFDB824AA0C4900A4CB89 /* test_config.json in Resources */,
+				53ECFDB224AA0C1B00A4CB89 /* update_doc in Resources */,
+				53ECFDB924AA0DE500A4CB89 /* libstitch_support.dylib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2886,6 +2940,7 @@
 				E8267FF11D90B8E700E001C7 /* RLMObjectServerTests.mm in Sources */,
 				1AA5AE9C1D98A68E00ED8C27 /* RLMSyncTestCase.mm in Sources */,
 				5346E7322487AC9D00595C68 /* RLMBSONTests.mm in Sources */,
+				537130C824A9E417001FDBBC /* RealmServer.swift in Sources */,
 				1A1536481DB0408A00C0EC93 /* RLMUser+ObjectServerTests.mm in Sources */,
 				3F558C9022C29A03002F0F30 /* RLMTestCase.m in Sources */,
 				3F73BC921E3A877300FE80B6 /* RLMTestUtils.m in Sources */,
@@ -2893,6 +2948,7 @@
 				1AA5AE981D989BE400ED8C27 /* SwiftSyncTestCase.swift in Sources */,
 				4996EAA02465C44E003A1F51 /* SwiftBSONTests.swift in Sources */,
 				3F558C8822C29A03002F0F30 /* TestUtils.mm in Sources */,
+				532E916F24AA533A003FD9DB /* TimeoutProxyServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3044,6 +3100,11 @@
 			isa = PBXTargetDependency;
 			target = 49E57A16245C3F31004AF428 /* Download BaaS */;
 			targetProxy = 49E57A1B245C5B0E004AF428 /* PBXContainerItemProxy */;
+		};
+		537689AC24A7DD060008E57B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5D660FCB1BE98C560021E04F /* RealmSwift */;
+			targetProxy = 537689AB24A7DD060008E57B /* PBXContainerItemProxy */;
 		};
 		5D6157021BE0A3A100A4BD3F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3312,6 +3373,11 @@
 			baseConfigurationReference = 5DD755E01BE05C19002800DA /* Tests.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Realm/ObjectServerTests/ObjectServerTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/stitch/etc/dylib/lib",
+					"$(PROJECT_DIR)/build/go/src/github.com/10gen/stitch/etc/dylib/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Realm/ObjectServerTests/Object-Server-Tests-Bridging-Header.h";
 			};
@@ -3322,6 +3388,11 @@
 			baseConfigurationReference = 5DD755E01BE05C19002800DA /* Tests.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "Realm/ObjectServerTests/ObjectServerTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/stitch/etc/dylib/lib",
+					"$(PROJECT_DIR)/build/go/src/github.com/10gen/stitch/etc/dylib/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Realm/ObjectServerTests/Object-Server-Tests-Bridging-Header.h";
 			};

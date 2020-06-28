@@ -6,12 +6,12 @@ require 'fileutils'
 MONGODB_VERSION='4.4.0-rc5'
 GO_VERSION='1.14.2'
 NODE_VERSION='8.11.2'
-STITCH_VERSION='84893c521b3bc1e493b12c967b0d950694333a2a'
+STITCH_VERSION='8322b26c33396ec3de1c0d8d7f8061e94a57b9ba'
 
 BASE_DIR = Dir.pwd
 BUILD_DIR = "#{BASE_DIR}/build"
 PID_FILE = "#{BUILD_DIR}/pid.txt"
-STITCH_DIR = "#{BASE_DIR}/stitch"
+STITCH_DIR = "#{BUILD_DIR}/go/src/github.com/10gen/stitch"
 
 MONGODB_URL="https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-#{MONGODB_VERSION}.tgz"
 TRANSPILER_TARGET='node8-macos'
@@ -20,12 +20,13 @@ MONGO_DIR="'#{BUILD_DIR}'/mongodb-macos-x86_64-#{MONGODB_VERSION}"
 
 def setup_mongod
     if !Dir.exists?(MONGO_DIR)
-        `cd '#{BUILD_DIR}' && curl --silent '#{MONGODB_URL}' | tar xz && mkdir #{MONGO_DIR}/db_files`
+        `cd '#{BUILD_DIR}' && curl --silent '#{MONGODB_URL}' | tar xz`
     end
 end
 
 def run_mongod
     puts "starting mongod..."
+    puts `mkdir #{MONGO_DIR}/db_files`
     puts `#{MONGO_DIR}/bin/mongod --quiet \
         --dbpath #{MONGO_DIR}/db_files \
         --port 26000 \
@@ -61,9 +62,14 @@ def setup_stitch
     puts "setting up stitch"
     exports = []
 
+    if !Dir.exists?("#{BUILD_DIR}/go")
+        puts 'downloading go'
+        `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
+    end
+    
     if !Dir.exists?(STITCH_DIR)
         puts 'cloning stitch'
-        `git clone git@github.com:10gen/stitch`
+        `git clone git@github.com:10gen/stitch #{BUILD_DIR}/go/src/github.com/10gen/stitch`
     end
 
     puts 'checking out stitch'
@@ -90,10 +96,10 @@ def setup_stitch
         puts `chmod +x '#{assisted_agg_filepath}'`
     end
 
-    if `which node`.empty?
+    if `which node`.empty? || !Dir.exists("#{STITCH_DIR}/node-v#{NODE_VERSION}-darwin-x64")
         puts "downloading node 🚀"
-        puts `cd '#{STITCH_DIR}' && curl -O "https://nodejs.org/dist/v#{NODE_VERSION}/node-v#{NODE_VERSION}-darwin-x64.tar.gz" | tar xzf node-v#{NODE_VERSION}-darwin-x64.tar.gz`
-        exports << "export PATH=\"#{STITCH_DIR}/node-v8.11.2-darwin-x64/bin/:$PATH\""
+        puts `cd '#{STITCH_DIR}' && curl -O "https://nodejs.org/dist/v#{NODE_VERSION}/node-v#{NODE_VERSION}-darwin-x64.tar.gz" && tar xzf node-v#{NODE_VERSION}-darwin-x64.tar.gz`
+        exports << "export PATH=\"#{STITCH_DIR}/node-v#{NODE_VERSION}-darwin-x64/bin/:$PATH\""
     end
 
     if `which yarn`.empty?
@@ -106,30 +112,28 @@ def setup_stitch
     puts `#{exports.length() == 0 ? "" : exports.join(' && ') + ' &&'} \
         cd '#{STITCH_DIR}/etc/transpiler' && yarn install && yarn run build -t "#{TRANSPILER_TARGET}"`
 
-    if !Dir.exists?('go')
-        puts 'downloading go'
-        `curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
-    end
-
-    exports << "export GOROOT=\"#{BASE_DIR}/go\""
+    exports << "export GOROOT=\"#{BASE_DIR}/build/go\""
     exports << "export PATH=\"$GOROOT/bin:$PATH\""
 
-    exports << "export STITCH_PATH=\"#{BASE_DIR}/stitch\""
+    exports << "export STITCH_PATH=\"#{STITCH_DIR}\""
     exports << "export PATH=\"$PATH:$STITCH_PATH/etc/transpiler/bin\""
     exports << "export LD_LIBRARY_PATH=\"$STITCH_PATH/etc/dylib/lib\""
 
-    puts 'running stitch'
+    puts 'build create_user binary'
 
     puts `#{exports.join(' && ')} && \
         cd '#{STITCH_DIR}' && \
-        go run -exec "env LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\"" cmd/auth/user.go addUser \
-            -domainID 000000000000000000000000 \
-            -mongoURI mongodb://localhost:26000 \
-            -salt 'DQOWene1723baqD!_@#' \
-            -id "unique_user@domain.com" \
-            -password "password"`
+        go build -o create_user cmd/auth/user.go`
 
-    puts 'user created'
+    puts 'create_user binary built'
+    
+    puts 'building server binary'
+
+    puts `#{exports.join(' && ')} && \
+        cd '#{STITCH_DIR}' && \
+        go build -o stitch_server cmd/server/main.go`
+        
+    puts 'server binary built'
 end
 
 def build_action
@@ -138,17 +142,15 @@ def build_action
         FileUtils.mkdir_p BUILD_DIR
         setup_mongod
         run_mongod
+        shutdown_mongod
         setup_stitch
     rescue => exception
         puts "error setting up: #{exception}"
-    ensure
-        shutdown_mongod
     end
 end
 
 def clean_action
     puts 'cleaning'
-    shutdown_mongod
     `rm -rf #{MONGO_DIR}`
     `cd #{STITCH_DIR} && git rm -rf . && git clean -fxd`
 end

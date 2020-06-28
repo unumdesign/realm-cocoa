@@ -17,7 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #import "RLMBSON.h"
-#import "util/bson/bson.hpp"
+#import <util/bson/bson.hpp>
 #import <realm/util/optional.hpp>
 
 realm::bson::Bson RLMConvertRLMBSONToBson(id<RLMBSON> b);

@@ -109,3 +109,15 @@ class Proxy
   end
 
 end
+
+if ARGV.length < 1
+    abort("🔴 too few arguments")
+end
+
+case ARGV[0]
+when "start_proxy"
+    if ARGV.length < 3
+        abort("🔴 too few arguments to start proxy. requires [port] and [delay]")
+    end
+    Proxy.new.run(ARGV[1].to_i, ARGV[2].to_i)
+end
