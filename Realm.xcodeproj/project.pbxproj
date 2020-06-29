@@ -297,7 +297,6 @@
 		534402D2247FCCA300866F32 /* bson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49AD39F2244E1A370097500E /* bson.cpp */; };
 		5346E7322487AC9D00595C68 /* RLMBSONTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5346E7312487AC9D00595C68 /* RLMBSONTests.mm */; };
 		536B7C0C24A4C223006B535D /* dependencies.list in Resources */ = {isa = PBXBuildFile; fileRef = 536B7C0B24A4C223006B535D /* dependencies.list */; };
-		536B7C0E24A509AC006B535D /* proxy.rb in Resources */ = {isa = PBXBuildFile; fileRef = 494566AA246EF031000FD07F /* proxy.rb */; };
 		536B7C1024A509AC006B535D /* setup_baas.rb in Resources */ = {isa = PBXBuildFile; fileRef = 49D9DFC4246C8E48003AD31D /* setup_baas.rb */; };
 		537130C824A9E417001FDBBC /* RealmServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537130C724A9E417001FDBBC /* RealmServer.swift */; };
 		53ECFDAC24AA0C0D00A4CB89 /* assisted_agg in Resources */ = {isa = PBXBuildFile; fileRef = 53ECFDAB24AA0C0D00A4CB89 /* assisted_agg */; };
@@ -924,7 +923,6 @@
 		3FEB383C1E70AC6900F22712 /* ObjectCreationTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectCreationTests.mm; sourceTree = "<group>"; };
 		3FEC4A3D1BBB188B00F009C3 /* SwiftSchemaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftSchemaTests.swift; sourceTree = "<group>"; };
 		494566A8246E8C59000FD07F /* ObjectiveCSupport+BSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObjectiveCSupport+BSON.swift"; sourceTree = "<group>"; };
-		494566AA246EF031000FD07F /* proxy.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; name = proxy.rb; path = Realm/ObjectServerTests/proxy.rb; sourceTree = "<group>"; };
 		498C7F3724479904009DE80A /* remote_mongo_database.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = remote_mongo_database.hpp; path = sync/remote_mongo_database.hpp; sourceTree = "<group>"; };
 		498C7F3824479904009DE80A /* remote_mongo_client.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = remote_mongo_client.hpp; path = sync/remote_mongo_client.hpp; sourceTree = "<group>"; };
 		498C7F3924479904009DE80A /* remote_mongo_collection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = remote_mongo_collection.hpp; path = sync/remote_mongo_collection.hpp; sourceTree = "<group>"; };
@@ -1742,7 +1740,6 @@
 				4996EA9F2465C44E003A1F51 /* SwiftBSONTests.swift */,
 				1AA5AE961D989BE000ED8C27 /* SwiftSyncTestCase.swift */,
 				536B7C0B24A4C223006B535D /* dependencies.list */,
-				494566AA246EF031000FD07F /* proxy.rb */,
 				49D9DFC4246C8E48003AD31D /* setup_baas.rb */,
 			);
 			name = "Object Server Tests";
@@ -2471,7 +2468,6 @@
 				536B7C0C24A4C223006B535D /* dependencies.list in Resources */,
 				53ECFDAE24AA0C1100A4CB89 /* create_user in Resources */,
 				53ECFDB024AA0C1700A4CB89 /* stitch_server in Resources */,
-				536B7C0E24A509AC006B535D /* proxy.rb in Resources */,
 				53ECFDAC24AA0C0D00A4CB89 /* assisted_agg in Resources */,
 				536B7C1024A509AC006B535D /* setup_baas.rb in Resources */,
 				53ECFDB624AA0C3F00A4CB89 /* transpiler in Resources */,

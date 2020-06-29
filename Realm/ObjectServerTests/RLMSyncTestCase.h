@@ -59,14 +59,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)objectWithRealmId:(NSString *)realmId;
 @end
 
-//@interface RealmObjectServer : NSObject
-//@property (nonatomic, readonly) NSString *appId;
-//+ (instancetype)sharedServer;
-//
-//- (NSString *)createApp;
-//
-//@end
-
 @interface RLMSyncTestCase : RLMMultiProcessTestCase
 
 @property (nonatomic, readonly) NSString *appId;
