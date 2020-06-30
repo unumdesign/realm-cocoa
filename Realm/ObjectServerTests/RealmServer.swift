@@ -112,7 +112,7 @@ class Admin {
                 var request = URLRequest(url: url)
                 request.httpMethod = httpMethod
                 request.allHTTPHeaderFields = [
-                    "Authorization": "Bearer \(String(describing: accessToken))",
+                    "Authorization": "Bearer \(accessToken)",
                     "Content-Type": "application/json;charset=utf-8",
                     "Accept": "application/json"
                 ]
@@ -405,13 +405,13 @@ public class RealmServer : NSObject {
 
         mongoProcess.launchPath = mongoUrl.appendingPathComponent("bin").appendingPathComponent("mongod").absoluteString
         mongoProcess.arguments = [
-//            "--quiet",
+            "--quiet",
             "--dbpath", "\(mongoUrl)/\(mongoDataDirectory)",
             "--bind_ip", "localhost",
             "--port", "26000",
             "--replSet", "test"
         ]
-//        mongoProcess.standardOutput = nil
+        mongoProcess.standardOutput = nil
         try mongoProcess.run()
     }
 
