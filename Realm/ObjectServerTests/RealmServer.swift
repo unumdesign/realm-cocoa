@@ -253,7 +253,7 @@ class Admin {
     }
     
     /// Synchronously authenticate an admin session
-    func login() -> (AdminSession?, Error?) {
+    func login() throws -> AdminSession {
         let authUrl = URL(string: "http://localhost:9090/api/admin/v3.0/auth/providers/local-userpass/login")!
         var loginRequest = URLRequest(url: authUrl)
         loginRequest.httpMethod = "POST"
@@ -292,18 +292,22 @@ class Admin {
                         }
                         return
                     }
-                    
+
                     adminSession = AdminSession(accessToken: accessToken, groupId: adminProfile.roles[0].groupId)
+                    group.leave()
                 }
             } catch {
                 outError = error
             }
         }.resume()
-        guard case .success = group.wait(timeout: .now() + 5) else {
+        guard case .success = group.wait(timeout: .now() + 10) else {
             outError = URLError(.cannotFindHost)
-            return (adminSession, outError)
+            throw outError!
         }
-        return (adminSession, outError)
+        if let outError = outError {
+            throw outError
+        }
+        return adminSession!
     }
 }
 
@@ -316,7 +320,8 @@ class Admin {
 @objc(RealmServer)
 public class RealmServer : NSObject {
     /// Shared RealmServer. This class only needs to be initialized and torn down once per test suite run.
-    @objc static let shared: RealmServer = RealmServer()
+    @objc static var shared = RealmServer()
+
     /// Process that runs the local mongo server. Should be terminated on exit.
     private let mongoProcess = Process()
     /// Process that runs the local backend server. Should be terminated on exit.
@@ -351,14 +356,13 @@ public class RealmServer : NSObject {
                 _ = RealmServer.shared.tearDown
             }
 
-            launchMongoProcess()
-            launchServerProcess()
-            let (adminSession, loginError) = Admin().login()
-            guard let session = adminSession else {
-                XCTFail("Could not initiate admin session: \(loginError?.localizedDescription ?? "unknown cause")")
-                return
+            do {
+                try launchMongoProcess()
+                try launchServerProcess()
+                self.session = try Admin().login()
+            } catch {
+                XCTFail("Could not initiate admin session: \(error.localizedDescription)")
             }
-            self.session = session
         }
     }
 
@@ -373,7 +377,7 @@ public class RealmServer : NSObject {
             "admin",
             "--port", "26000",
             "--eval", "'db.adminCommand({replSetStepDown: 0, secondaryCatchUpPeriodSecs: 0, force: true})'"]
-        rsStepDownProcess.launch()
+        try? rsStepDownProcess.run()
         rsStepDownProcess.waitUntilExit()
         
         // step down the replica set
@@ -383,7 +387,7 @@ public class RealmServer : NSObject {
             "admin",
             "--port", "26000",
             "--eval", "'db.shutdownServer({force: true})'"]
-        mongoShutdownProcess.launch()
+        try? mongoShutdownProcess.run()
         mongoShutdownProcess.waitUntilExit()
 
         mongoProcess.waitUntilExit()
@@ -394,24 +398,24 @@ public class RealmServer : NSObject {
 
     /// Launch the mongo server in the background.
     /// This process should run until the test suite is complete.
-    private func launchMongoProcess() {
+    private func launchMongoProcess() throws {
         try? FileManager().createDirectory(atPath: mongoUrl.appendingPathComponent(mongoDataDirectory).absoluteString,
                                            withIntermediateDirectories: false,
                                            attributes: nil)
 
         mongoProcess.launchPath = mongoUrl.appendingPathComponent("bin").appendingPathComponent("mongod").absoluteString
         mongoProcess.arguments = [
-            "--quiet",
+//            "--quiet",
             "--dbpath", "\(mongoUrl)/\(mongoDataDirectory)",
             "--bind_ip", "localhost",
             "--port", "26000",
             "--replSet", "test"
         ]
-        mongoProcess.standardOutput = nil
-        mongoProcess.launch()
+//        mongoProcess.standardOutput = nil
+        try mongoProcess.run()
     }
 
-    private func launchServerProcess() {
+    private func launchServerProcess() throws {
         let goRoot = rootUrl.appendingPathComponent("build").appendingPathComponent("go").absoluteString
         let bundle = Bundle.init(for: RealmServer.self)
         let serverBinary = bundle.path(forResource: "stitch_server", ofType: nil)
@@ -434,7 +438,7 @@ public class RealmServer : NSObject {
             "-id", "unique_user@domain.com",
             "-password", "password"
         ]
-        userProcess.launch()
+        try userProcess.run()
         userProcess.waitUntilExit()
 
         serverProcess.environment = [
@@ -465,14 +469,16 @@ public class RealmServer : NSObject {
                     return String(data: try! JSONSerialization.data(withJSONObject: json,
                                                                     options: .prettyPrinted),
                                   encoding: .utf8)!
-                } else {
+                } else if !part.isEmpty {
                     return String(part)
+                } else {
+                    return ""
                 }
             }.joined(separator: "\t"))
         }
 
-        serverProcess.standardOutput = nil
-        serverProcess.launch()
+        serverProcess.standardOutput = pipe
+        try serverProcess.run()
         waitForServerToStart()
     }
     

@@ -1525,7 +1525,8 @@ static const NSInteger NUMBER_OF_BIG_OBJECTS = 2;
                                                                   localAppName:nil
                                                                localAppVersion:nil
                                                        defaultRequestTimeoutMS:60];
-    RLMApp *app = [RLMApp appWithId:[RealmServer.shared createAppAndReturnError:nil] configuration:config];
+    RLMApp *app = [RLMApp appWithId:[RealmServer.shared createAppAndReturnError:nil]
+                      configuration:config];
 
     RLMRealmConfiguration *c = [self.anonymousUser configurationWithPartitionValue:self.appId];
     RLMSyncConfiguration *syncConfig = c.syncConfiguration;

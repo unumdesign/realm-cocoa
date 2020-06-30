@@ -20,7 +20,7 @@ import XCTest
 import RealmSwift
 
 class SwiftSyncTestCase: RLMSyncTestCase {
-    func executeChild(file: StaticString = #filePath, line: UInt = #line) {
+    func executeChild(file: StaticString = #file, line: UInt = #line) {
         XCTAssert(0 == runChildAndWait(), "Tests in child process failed", file: file, line: line)
     }
 
@@ -63,7 +63,7 @@ class SwiftSyncTestCase: RLMSyncTestCase {
     }
 
     func synchronouslyLogInUser(for credentials: Credentials,
-                                file: StaticString = #filePath,
+                                file: StaticString = #file,
                                 line: UInt = #line) throws -> User {
         let process = isParent ? "parent" : "child"
         var theUser: User?
@@ -87,7 +87,7 @@ class SwiftSyncTestCase: RLMSyncTestCase {
     }
 
     func synchronouslyLogOutUser(_ user: User,
-                                 file: StaticString = #filePath,
+                                 file: StaticString = #file,
                                  line: UInt = #line) throws {
         var theError: Error?
         let ex = expectation(description: "Should log out the user properly")
@@ -116,7 +116,7 @@ class SwiftSyncTestCase: RLMSyncTestCase {
     func checkCount<T: Object>(expected: Int,
                                _ realm: Realm,
                                _ type: T.Type,
-                               file: StaticString = #filePath,
+                               file: StaticString = #file,
                                line: UInt = #line) {
         let actual = realm.objects(type).count
         XCTAssert(actual == expected,

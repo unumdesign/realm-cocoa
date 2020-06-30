@@ -3374,6 +3374,7 @@
 					"$(PROJECT_DIR)/stitch/etc/dylib/lib",
 					"$(PROJECT_DIR)/build/go/src/github.com/10gen/stitch/etc/dylib/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Realm/ObjectServerTests/Object-Server-Tests-Bridging-Header.h";
 			};
@@ -3389,6 +3390,7 @@
 					"$(PROJECT_DIR)/stitch/etc/dylib/lib",
 					"$(PROJECT_DIR)/build/go/src/github.com/10gen/stitch/etc/dylib/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Realm/ObjectServerTests/Object-Server-Tests-Bridging-Header.h";
 			};

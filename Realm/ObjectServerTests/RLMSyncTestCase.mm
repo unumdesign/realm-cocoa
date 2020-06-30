@@ -429,8 +429,6 @@ static NSURL *syncDirectoryForChildProcess() {
     [super setUp];
     self.continueAfterFailure = NO;
 
-//    [self resetSyncManager];
-
     [self setupSyncManager];
 }
 
