@@ -96,7 +96,7 @@ def setup_stitch
         puts `chmod +x '#{assisted_agg_filepath}'`
     end
 
-    if `which node`.empty? || !Dir.exists("#{STITCH_DIR}/node-v#{NODE_VERSION}-darwin-x64")
+    if `which node`.empty? || !Dir.exists?("#{STITCH_DIR}/node-v#{NODE_VERSION}-darwin-x64")
         puts "downloading node 🚀"
         puts `cd '#{STITCH_DIR}' && curl -O "https://nodejs.org/dist/v#{NODE_VERSION}/node-v#{NODE_VERSION}-darwin-x64.tar.gz" && tar xzf node-v#{NODE_VERSION}-darwin-x64.tar.gz`
         exports << "export PATH=\"#{STITCH_DIR}/node-v#{NODE_VERSION}-darwin-x64/bin/:$PATH\""
