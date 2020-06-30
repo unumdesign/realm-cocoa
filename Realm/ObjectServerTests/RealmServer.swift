@@ -251,7 +251,7 @@ class Admin {
             }
         }.resume()
     }
-    
+
     /// Synchronously authenticate an admin session
     func login() throws -> AdminSession {
         let authUrl = URL(string: "http://localhost:9090/api/admin/v3.0/auth/providers/local-userpass/login")!
