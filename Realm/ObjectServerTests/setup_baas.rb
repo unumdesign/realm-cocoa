@@ -61,23 +61,18 @@ end
 def setup_stitch
     puts "setting up stitch"
     exports = []
-    go_root = ''
-    stitch_dir = ''
+    go_root = "#{BUILD_DIR}/go"
+    stitch_dir = "#{go_root}/src/github.com/10gen/stitch"
 
-    if `which go`.empty? && !Dir.exists?("#{BUILD_DIR}/go")
+    if !Dir.exists?("#{BUILD_DIR}/go")
         puts 'downloading go'
         `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
-        go_root = "#{BUILD_DIR}/go"
-    else
-        go_root = '~/go'
-        puts "GOROOT set to #{go_root}"
     end
 
     stitch_dir = '#{go_root}/src/github.com/10gen/stitch'
     if !Dir.exists?(stitch_dir)
         puts 'cloning stitch'
         `git clone git@github.com:10gen/baas #{go_root}/src/github.com/10gen/stitch`
-        stitch_dir = "#{go_root}/src/github.com/10gen/stitch"
     end
 
     puts 'checking out stitch'
