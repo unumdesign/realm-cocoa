@@ -69,7 +69,7 @@ def setup_stitch
         `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
     end
 
-    stitch_dir = '#{go_root}/src/github.com/10gen/stitch'
+    stitch_dir = "#{go_root}/src/github.com/10gen/stitch"
     if !Dir.exists?(stitch_dir)
         puts 'cloning stitch'
         `git clone git@github.com:10gen/baas #{go_root}/src/github.com/10gen/stitch`
