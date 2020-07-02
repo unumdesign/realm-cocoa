@@ -2,6 +2,7 @@
 
 require 'net/http'
 require 'fileutils'
+require 'pathname'
 
 MONGODB_VERSION='4.4.0-rc5'
 GO_VERSION='1.14.2'
@@ -68,7 +69,12 @@ def setup_stitch
         `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
         go_root = "#{BUILD_DIR}/go"
     else
-        go_root = `$GOROOT`
+        go_bin_exec = `which go`
+        if go_bin_exec.empty?
+            go_bin_exec = "#{BUILD_DIR}/go/bin/go"
+        end
+        go_root = Pathname.new(go_bin_exec).parent.parent.to_s
+        puts "GOROOT set to #{go_root}"
         stitch_dir = '#{go_root}/src/github.com/10gen/stitch'
     end
 
