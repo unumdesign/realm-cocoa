@@ -52,7 +52,6 @@ end
 def shutdown_mongod
     puts 'shutting down mongod'
     if Dir.exists?(MONGO_DIR)
-#        puts `#{MONGO_DIR}/bin/mongo --port 26000 admin --eval "db.adminCommand({replSetStepDown: 0, secondaryCatchUpPeriodSecs: 0, force: true})"`
         puts `#{MONGO_DIR}/bin/mongo --port 26000 admin --eval "db.shutdownServer({force: true})"`
     end
     puts 'mongod is down'
@@ -62,14 +61,20 @@ def setup_stitch
     puts "setting up stitch"
     exports = []
 
-    if !Dir.exists?("#{BUILD_DIR}/go")
+    GOROOT = ''
+    if `which go`.empty? && !Dir.exists?("#{BUILD_DIR}/go")
         puts 'downloading go'
         `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
+        GOROOT = "#{BUILD_DIR}/go"
+    else
+        GOROOT = `$GOROOT`
+        STITCH_DIR = '#{GOROOT}/src/github.com/10gen/stitch'
     end
 
     if !Dir.exists?(STITCH_DIR)
         puts 'cloning stitch'
-        `git clone git@github.com:10gen/baas #{BUILD_DIR}/go/src/github.com/10gen/stitch`
+        `git clone git@github.com:10gen/baas #{GOROOT}/src/github.com/10gen/stitch`
+        STITCH_DIR = "#{GOROOT}/src/github.com/10gen/stitch"
     end
 
     puts 'checking out stitch'
@@ -96,7 +101,7 @@ def setup_stitch
         puts `chmod +x '#{assisted_agg_filepath}'`
     end
 
-    if `which node`.empty? || !Dir.exists?("#{STITCH_DIR}/node-v#{NODE_VERSION}-darwin-x64")
+    if `which node`.empty? && !Dir.exists?("#{STITCH_DIR}/node-v#{NODE_VERSION}-darwin-x64")
         puts "downloading node 🚀"
         puts `cd '#{STITCH_DIR}' && curl -O "https://nodejs.org/dist/v#{NODE_VERSION}/node-v#{NODE_VERSION}-darwin-x64.tar.gz" && tar xzf node-v#{NODE_VERSION}-darwin-x64.tar.gz`
         exports << "export PATH=\"#{STITCH_DIR}/node-v#{NODE_VERSION}-darwin-x64/bin/:$PATH\""
