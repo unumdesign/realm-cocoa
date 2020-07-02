@@ -71,9 +71,9 @@ def setup_stitch
     else
         go_root = '~/go'
         puts "GOROOT set to #{go_root}"
-        stitch_dir = '#{go_root}/src/github.com/10gen/stitch'
     end
 
+    stitch_dir = '#{go_root}/src/github.com/10gen/stitch'
     if !Dir.exists?(stitch_dir)
         puts 'cloning stitch'
         `git clone git@github.com:10gen/baas #{go_root}/src/github.com/10gen/stitch`
