@@ -21,15 +21,15 @@ import RealmSwift
 import XCTest
 
 // MARK: - AdminProfile
-struct AdminProfile : Codable {
-    struct Role : Codable {
+struct AdminProfile: Codable {
+    struct Role: Codable {
         enum CodingKeys: String, CodingKey {
             case groupId = "group_id"
         }
-        
+
         let groupId: String
     }
-    
+
     let roles: [Role]
 }
 
@@ -42,12 +42,12 @@ class Admin {
         var accessToken: String
         /// The group id associated with the authenticated user
         var groupId: String
-        
+
         init(accessToken: String, groupId: String) {
             self.accessToken = accessToken
             self.groupId = groupId
         }
-        
+
         // MARK: AdminEndpoint
         /// Representation of a given admin endpoint.
         /// This allows us to call a give endpoint dynamically with loose typing.
@@ -60,7 +60,7 @@ class Admin {
             /// The endpoint url. This will be appending to dynamically by appending the dynamic member called
             /// as if it were a path.
             var url: URL
-            
+
             /**
              Append the given member to the path. E.g., if the current URL is set to
             http://localhost:9090/api/admin/v3.0/groups/groupId/apps/appId
@@ -86,7 +86,7 @@ class Admin {
                                      groupId: groupId,
                                      url: url.appendingPathComponent(snakeCaseMember!))
             }
-            
+
             /**
              Append the given id to the path. E.g., if the current URL is set to
              http://localhost:9090/api/admin/v3.0/groups/groupId/apps/
@@ -101,14 +101,13 @@ class Admin {
               ```
              */
             subscript(_ id: String) -> AdminEndpoint {
-                get {
-                    return AdminEndpoint(accessToken: accessToken,
-                                         groupId: groupId,
-                                         url: url.appendingPathComponent(id))
-                }
+                return AdminEndpoint(accessToken: accessToken,
+                                     groupId: groupId,
+                                     url: url.appendingPathComponent(id))
             }
 
-            private func request(httpMethod: String, data: Any? = nil, completionHandler: @escaping (Any?, Error?) -> ()) {
+            private func request(httpMethod: String, data: Any? = nil,
+                                 completionHandler: @escaping (Any?, Error?) -> Void) {
                 var request = URLRequest(url: url)
                 request.httpMethod = httpMethod
                 request.allHTTPHeaderFields = [
@@ -145,19 +144,19 @@ class Admin {
                     }
                 }.resume()
             }
-            
-            func get(_ completionHandler: @escaping (Any?, Error?) -> ()) {
+
+            func get(_ completionHandler: @escaping (Any?, Error?) -> Void) {
                 request(httpMethod: "GET", completionHandler: completionHandler)
             }
-            
-            func get(on group: DispatchGroup, _ completionHandler: @escaping (Any?, Error?) -> ()) {
+
+            func get(on group: DispatchGroup, _ completionHandler: @escaping (Any?, Error?) -> Void) {
                 group.enter()
                 get {
                     completionHandler($0, $1)
                     group.leave()
                 }
             }
-            
+
             func get() -> (Any?, Error?) {
                 let group = DispatchGroup()
                 var any: Any?, error: Error?
@@ -172,19 +171,20 @@ class Admin {
                 }
                 return (any, error)
             }
-            
-            func post(_ data: Any, _ completionHandler: @escaping (Any?, Error?) -> ()) {
+
+            func post(_ data: Any, _ completionHandler: @escaping (Any?, Error?) -> Void) {
                 request(httpMethod: "POST", data: data, completionHandler: completionHandler)
             }
-            
-            func post(on group: DispatchGroup, _ data: Any, _ completionHandler: @escaping (Any?, Error?) -> ()) {
+
+            func post(on group: DispatchGroup, _ data: Any,
+                      _ completionHandler: @escaping (Any?, Error?) -> Void) {
                 group.enter()
                 post(data) {
                     completionHandler($0, $1)
                     group.leave()
                 }
             }
-            
+
             func post(_ data: Any) -> (Any?, Error?) {
                 var any: Any?, error: Error?
                 let group = DispatchGroup()
@@ -199,20 +199,20 @@ class Admin {
                 }
                 return (any, error)
             }
-            
-            func put(_ completionHandler: @escaping (Any?, Error?) -> ()) {
+
+            func put(_ completionHandler: @escaping (Any?, Error?) -> Void) {
                 request(httpMethod: "PUT", completionHandler: completionHandler)
             }
-            
-            func put(on group: DispatchGroup, _ data: Any? = nil, _ completionHandler: @escaping (Any?, Error?) -> ()) {
+
+            func put(on group: DispatchGroup, _ data: Any? = nil, _ completionHandler: @escaping (Any?, Error?) -> Void) {
                 group.enter()
                 request(httpMethod: "PUT", data: data, completionHandler: {
                     completionHandler($0, $1)
                     group.leave()
                 })
             }
-            
-            func patch(on group: DispatchGroup, _ data: Any, _ completionHandler: @escaping (Any?, Error?) -> ()) {
+
+            func patch(on group: DispatchGroup, _ data: Any, _ completionHandler: @escaping (Any?, Error?) -> Void) {
                 group.enter()
                 request(httpMethod: "PATCH", data: data, completionHandler: {
                     completionHandler($0, $1)
@@ -220,14 +220,14 @@ class Admin {
                 })
             }
         }
-        
+
         /// The initial endpoint to access the admin server
         lazy var apps = AdminEndpoint(accessToken: accessToken,
                                       groupId: groupId,
                                       url: URL(string: "http://localhost:9090/api/admin/v3.0/groups/\(groupId)/apps")!)
     }
-    
-    private func userProfile(accessToken: String, _ completionHandler: @escaping (AdminProfile?, Error?) -> ()) {
+
+    private func userProfile(accessToken: String, _ completionHandler: @escaping (AdminProfile?, Error?) -> Void) {
         var request = URLRequest(url: URL(string: "http://localhost:9090/api/admin/v3.0/auth/profile")!)
         request.allHTTPHeaderFields = [
             "Authorization": "Bearer \(String(describing: accessToken))"
@@ -243,7 +243,7 @@ class Admin {
                 }
                 return
             }
-            
+
             do {
                 completionHandler(try JSONDecoder().decode(AdminProfile.self, from: data), nil)
             } catch {
@@ -259,7 +259,7 @@ class Admin {
         loginRequest.httpMethod = "POST"
         loginRequest.allHTTPHeaderFields = ["Content-Type": "application/json;charset=utf-8",
                                             "Accept": "application/json"]
-        
+
         loginRequest.httpBody = try! JSONEncoder().encode(["provider": "userpass",
                                                            "username": "unique_user@domain.com",
                                                            "password": "password"])
@@ -278,9 +278,9 @@ class Admin {
                 }
                 return
             }
-            
+
             do {
-                guard let accessToken = try JSONDecoder().decode([String : String].self, from: data)["access_token"] else {
+                guard let accessToken = try JSONDecoder().decode([String: String].self, from: data)["access_token"] else {
                     throw URLError(.badServerResponse)
                 }
                 self.userProfile(accessToken: accessToken) { (adminProfile, error) in
@@ -318,7 +318,7 @@ class Admin {
  and allows for app creation.
  */
 @objc(RealmServer)
-public class RealmServer : NSObject {
+public class RealmServer: NSObject {
     /// Shared RealmServer. This class only needs to be initialized and torn down once per test suite run.
     @objc static var shared = RealmServer()
 
@@ -326,28 +326,28 @@ public class RealmServer : NSObject {
     private let mongoProcess = Process()
     /// Process that runs the local backend server. Should be terminated on exit.
     private let serverProcess = Process()
-    
+
     /// The root URL of the project.
     private lazy var rootUrl = URL(string: #file)!
         .deletingLastPathComponent()
         .deletingLastPathComponent()
         .deletingLastPathComponent()
-    
+
     /// The directory where mongo binaries and backing files are kept.
     private lazy var mongoUrl = rootUrl
         .appendingPathComponent("build")
         .appendingPathComponent("mongodb-macos-x86_64-4.4.0-rc5")
-    
+
     /// The directory where mongo stores its files. This is a unique value so that
     /// we have a fresh mongo each run.
     private lazy var mongoDataDirectory = ObjectId.generate().stringValue
-    
+
     /// Whether or not this is a parent or child process.
     private lazy var isParentProcess = (getenv("RLMProcessIsChild") == nil)
-    
+
     /// The current admin session
-    private var session: Admin.AdminSession? = nil
-    
+    private var session: Admin.AdminSession?
+
     private override init() {
         super.init()
 
@@ -369,7 +369,7 @@ public class RealmServer : NSObject {
     /// Lazy teardown for exit only.
     private lazy var tearDown: () = {
         serverProcess.terminate()
-        
+
         // step down the replica set
         let rsStepDownProcess = Process()
         rsStepDownProcess.launchPath = mongoUrl.appendingPathComponent("bin").appendingPathComponent("mongo").absoluteString
@@ -379,7 +379,7 @@ public class RealmServer : NSObject {
             "--eval", "'db.adminCommand({replSetStepDown: 0, secondaryCatchUpPeriodSecs: 0, force: true})'"]
         try? rsStepDownProcess.run()
         rsStepDownProcess.waitUntilExit()
-        
+
         // step down the replica set
         let mongoShutdownProcess = Process()
         mongoShutdownProcess.launchPath = mongoUrl.appendingPathComponent("bin").appendingPathComponent("mongo").absoluteString
@@ -426,7 +426,7 @@ public class RealmServer : NSObject {
         userProcess.environment = [
             "GOROOT": goRoot,
             "PATH": "$PATH:\(bundle.resourcePath!)",
-            "LD_LIBRARY_PATH":bundle.resourcePath!
+            "LD_LIBRARY_PATH": bundle.resourcePath!
         ]
         userProcess.launchPath = createUserBinary
         userProcess.arguments = [
@@ -481,7 +481,7 @@ public class RealmServer : NSObject {
         try serverProcess.run()
         waitForServerToStart()
     }
-    
+
     private func waitForServerToStart() {
         let group = DispatchGroup()
         group.enter()
@@ -505,7 +505,7 @@ public class RealmServer : NSObject {
     }
 
     typealias AppId = String
-    
+
     /// Create a new server app
     @objc func createApp() throws -> AppId {
         guard let session = session else {
@@ -535,24 +535,22 @@ public class RealmServer : NSObject {
                     "resetPasswordSubject": "Bye",
                     "autoConfirm": true
                 ]
-            ])  { if let error = $1 {
+            ]) { if let error = $1 {
             XCTFail(error.localizedDescription)
         }}
 
         app.authProviders.get(on: group) { any, error in
             guard let authProviders = any as? [[String: Any]] else {
-                return XCTFail()
+                return XCTFail("Bad formatting for authProviders")
             }
 
-            for provider in authProviders {
-                if provider["type"] as? String == "api-key" {
-                    return app.authProviders[provider["_id"] as! String].enable.put(on: group) { if let error = $1 {
-                        XCTFail(error.localizedDescription)
-                    }}
-                }
+            for provider in authProviders where provider["type"] as? String == "api-key" {
+                return app.authProviders[provider["_id"] as! String].enable.put(on: group) { if let error = $1 {
+                    XCTFail(error.localizedDescription)
+                }}
             }
         }
-        
+
         let (_, _) = app.secrets.post([
             "name": "BackingDB_uri",
             "value": "mongodb://localhost:26000"
@@ -582,8 +580,8 @@ public class RealmServer : NSObject {
               let serviceId = (serviceResponse as? [String: Any])?["_id"] as? String else {
             throw serviceCreationError ?? URLError(.badServerResponse)
         }
-        
-        let dogRule: [String : Any] = [
+
+        let dogRule: [String: Any] = [
             "database": "test_data",
             "collection": "Dog",
             "roles": [[
@@ -691,7 +689,7 @@ public class RealmServer : NSObject {
             "schema": [:],
             "relationships": [:]
         ]
-        
+
         let rules = app.services[serviceId].rules
         rules.post(on: group, dogRule, { if let error = $1 { XCTFail(error.localizedDescription) }})
         rules.post(on: group, personRule, { if let error = $1 { XCTFail(error.localizedDescription) }})
@@ -737,7 +735,7 @@ public class RealmServer : NSObject {
         app.sync.config.put(on: group, [
             "development_mode_enabled": true
         ]) { if let error = $1 { XCTFail(error.localizedDescription) }}
-        
+
         app.functions.post(on: group, [
             "name": "sum",
             "private": false,
@@ -748,7 +746,7 @@ public class RealmServer : NSObject {
             };
             """
         ]) { if let error = $1 { XCTFail(error.localizedDescription) }}
-        
+
         app.functions.post(on: group, [
             "name": "updateUserData",
             "private": false,
@@ -776,7 +774,7 @@ public class RealmServer : NSObject {
             "collection_name": "UserData",
             "user_id_field": "user_id"
         ]) { if let error = $1 { XCTFail(error.localizedDescription) }}
-        
+
         guard case .success = group.wait(timeout: .now() + 5.0) else {
             throw URLError(.badServerResponse)
         }

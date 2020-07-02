@@ -19,37 +19,37 @@
 import Foundation
 
 @objc(TimeoutProxyServer)
-class TimeoutProxyServer : NSObject {
+class TimeoutProxyServer: NSObject {
     var incomingRequests: [FileHandle: CFHTTPMessage] = [:]
-    var socket: CFSocket? = nil
+    var socket: CFSocket?
     let port: Int
-    var listeningHandle: FileHandle? = nil
-    
+    var listeningHandle: FileHandle?
+
     @objc init(port: Int) {
         self.port = port
     }
-    
+
     @objc func start() throws {
         socket = CFSocketCreate(kCFAllocatorDefault,
                                 PF_INET,
                                 SOCK_STREAM,
-                                IPPROTO_TCP, 0, nil, nil);
+                                IPPROTO_TCP, 0, nil, nil)
         guard let socket = socket else {
-            throw NSError(domain:"TimeoutServerError",
+            throw NSError(domain: "TimeoutServerError",
                           code: -1,
-                          userInfo:[NSLocalizedDescriptionKey: "Unable to create socket"])
+                          userInfo: [NSLocalizedDescriptionKey: "Unable to create socket"])
         }
 
 
-        var reuse = true;
-        let fileDescriptor = CFSocketGetNative(socket);
+        var reuse = true
+        let fileDescriptor = CFSocketGetNative(socket)
         guard setsockopt(fileDescriptor, SOL_SOCKET, SO_REUSEADDR,
                        &reuse, socklen_t(MemoryLayout.size(ofValue: Int.self))) != 0 else {
-            throw NSError(domain:"TimeoutServerError",
+            throw NSError(domain: "TimeoutServerError",
                           code: -1,
-                          userInfo:[NSLocalizedDescriptionKey: "Unable to set socket options"])
+                          userInfo: [NSLocalizedDescriptionKey: "Unable to set socket options"])
         }
-        
+
         var address = sockaddr_in()
         address.sin_len = __uint8_t(MemoryLayout.size(ofValue: address))
         address.sin_family = sa_family_t(AF_INET)
@@ -58,9 +58,9 @@ class TimeoutProxyServer : NSObject {
 
         let data = Data(bytes: &address, count: MemoryLayout.size(ofValue: address)) as CFData
         guard CFSocketSetAddress(socket, data) == .success else {
-            throw NSError(domain:"TimeoutServerError",
+            throw NSError(domain: "TimeoutServerError",
                           code: -1,
-                          userInfo:[NSLocalizedDescriptionKey: "Unable to create socket"])
+                          userInfo: [NSLocalizedDescriptionKey: "Unable to create socket"])
         }
 
         listeningHandle = FileHandle(fileDescriptor: fileDescriptor, closeOnDealloc: true)
@@ -68,10 +68,9 @@ class TimeoutProxyServer : NSObject {
                                                selector: #selector(receiveIncomingConnectionNotification(notification:)),
                                                name: NSNotification.Name.NSFileHandleConnectionAccepted,
                                                object: nil)
-        
         listeningHandle!.acceptConnectionInBackgroundAndNotify()
     }
-    
+
     @objc func receiveIncomingConnectionNotification(notification: Notification) {
         let userInfo = notification.userInfo
         let incomingFileHandle = userInfo?[NSFileHandleNotificationFileHandleItem] as? FileHandle
