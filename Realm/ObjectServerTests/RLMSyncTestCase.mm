@@ -467,15 +467,16 @@ static NSURL *syncDirectoryForChildProcess() {
         XCTestExpectation *ex = [self expectationWithDescription:@"Wait for logout"];
         [exs addObject:ex];
         [user logOutWithCompletion:^(NSError *) {
-            // Sessions are removed from the user asynchronously after a logout.
-            // We need to wait for this to happen before calling resetForTesting as
-            // that expects all sessions to be cleaned up first.
-            if (user.allSessions.count) {
-                [exs addObject:[self expectationForPredicate:[NSPredicate predicateWithFormat:@"allSessions.@count == 0"]
-                                         evaluatedWithObject:user handler:nil]];
-            }
             [ex fulfill];
         }];
+
+        // Sessions are removed from the user asynchronously after a logout.
+        // We need to wait for this to happen before calling resetForTesting as
+        // that expects all sessions to be cleaned up first.
+        if (user.allSessions.count) {
+            [exs addObject:[self expectationForPredicate:[NSPredicate predicateWithFormat:@"allSessions.@count == 0"]
+                                     evaluatedWithObject:user handler:nil]];
+        }
     }];
 
     if (exs.count) {
