@@ -34,7 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property RLMObjectId *_id;
 @property NSString *breed;
 @property NSString *name;
-@property NSString *realm_id;
 
 @end
 

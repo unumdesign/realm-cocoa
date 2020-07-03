@@ -12,7 +12,6 @@ STITCH_VERSION='8322b26c33396ec3de1c0d8d7f8061e94a57b9ba'
 BASE_DIR = Dir.pwd
 BUILD_DIR = "#{BASE_DIR}/build"
 PID_FILE = "#{BUILD_DIR}/pid.txt"
-#stitch_dir = "#{BUILD_DIR}/go/src/github.com/10gen/stitch"
 
 MONGODB_URL="https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-#{MONGODB_VERSION}.tgz"
 TRANSPILER_TARGET='node8-macos'
@@ -62,12 +61,6 @@ def setup_stitch
     puts "setting up stitch"
     exports = []
     go_root = "#{BUILD_DIR}/go"
-    puts "build dir contents"
-    puts `cd #{BUILD_DIR} && ls -l`
-    puts "this dir contents"
-    puts `ls -l`
-    puts "10gen dir contents"
-    puts `ls -l #{go_root}/src/github.com/10gen`
 
     if !File.exists?("#{go_root}/bin/go")
         puts 'downloading go'
@@ -84,7 +77,6 @@ def setup_stitch
     end
 
     puts 'checking out stitch'
-    puts `cd #{stitch_dir} && ls -l`
     `git -C '#{stitch_dir}' fetch && git -C '#{stitch_dir}' checkout #{STITCH_VERSION}`
 
     `mv #{stitch_dir} #{go_root}/src/github.com/10gen`
