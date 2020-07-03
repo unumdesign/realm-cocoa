@@ -127,7 +127,7 @@ def setup_stitch
 
     puts `#{exports.join(' && ')} && \
         cd '#{stitch_dir}' && \
-        go build -o create_user cmd/auth/user.go`
+        #{go_root}/bin/go build -o create_user cmd/auth/user.go`
 
     puts 'create_user binary built'
     
@@ -135,7 +135,7 @@ def setup_stitch
 
     puts `#{exports.join(' && ')} && \
         cd '#{stitch_dir}' && \
-        go build -o stitch_server cmd/server/main.go`
+        #{go_root}/bin/go build -o stitch_server cmd/server/main.go`
         
     puts 'server binary built'
 end
