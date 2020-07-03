@@ -62,21 +62,23 @@ def setup_stitch
     puts "setting up stitch"
     exports = []
     go_root = "#{BUILD_DIR}/go"
-    stitch_dir = "#{go_root}/src/github.com/10gen/stitch"
-
+    puts `rm -rf {go_root}`
     if !File.exists?("#{go_root}/bin/go")
         puts 'downloading go'
         `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
-        `mkdir -p #{go_root}/src/github.com/10gen`
+        puts `mkdir -p #{go_root}/src/github.com/10gen`
     end
 
-    stitch_dir = "#{BUILD_DIR}/stitch" ##{go_root}/src/github.com/10gen/stitch"
+    stitch_dir = "#{BUILD_DIR}/stitch"
     if !Dir.exists?(stitch_dir)
         puts 'cloning stitch'
         `git clone git@github.com:10gen/baas #{stitch_dir}`
+    else
+        puts 'stitch dir exists'
     end
 
     puts 'checking out stitch'
+    puts `cd #{stitch_dir} && ls -l`
     `git -C '#{stitch_dir}' fetch && git -C '#{stitch_dir}' checkout #{STITCH_VERSION}`
 
     `mv #{stitch_dir} #{go_root}/src/github.com/10gen`
