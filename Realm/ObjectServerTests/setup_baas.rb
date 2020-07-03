@@ -62,7 +62,6 @@ def setup_stitch
     puts "setting up stitch"
     exports = []
     go_root = "#{BUILD_DIR}/go"
-    puts `rm -rf {go_root}`
     puts "build dir contents"
     puts `cd #{BUILD_DIR} && ls -l`
     puts "this dir contents"
