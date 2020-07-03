@@ -64,7 +64,7 @@ def setup_stitch
     go_root = "#{BUILD_DIR}/go"
     stitch_dir = "#{go_root}/src/github.com/10gen/stitch"
 
-    if !Dir.exists?("#{BUILD_DIR}/go")
+    if !Dir.exists?(go_root)
         puts 'downloading go'
         `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
     end
