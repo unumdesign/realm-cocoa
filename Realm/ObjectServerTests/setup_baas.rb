@@ -67,17 +67,20 @@ def setup_stitch
     if !File.exists?("#{go_root}/bin/go")
         puts 'downloading go'
         `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
+        `mkdir -p #{go_root}/src/github.com/10gen`
     end
 
-    stitch_dir = "#{go_root}/src/github.com/10gen/stitch"
+    stitch_dir = "#{BUILD_DIR}/stitch" ##{go_root}/src/github.com/10gen/stitch"
     if !Dir.exists?(stitch_dir)
         puts 'cloning stitch'
-        `git clone git@github.com:10gen/baas #{go_root}/src/github.com/10gen/stitch`
+        `git clone git@github.com:10gen/baas #{stitch_dir}`
     end
 
     puts 'checking out stitch'
     `git -C '#{stitch_dir}' fetch && git -C '#{stitch_dir}' checkout #{STITCH_VERSION}`
 
+    `mv #{stitch_dir} #{go_root}/src/github.com/10gen`
+    stitch_dir = "#{go_root}/src/github.com/10gen/stitch"
     dylib_dir = "#{stitch_dir}/etc/dylib"
     if !Dir.exists?(dylib_dir)
         puts 'downloading mongodb dylibs'
