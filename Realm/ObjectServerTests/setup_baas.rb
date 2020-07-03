@@ -126,6 +126,9 @@ def setup_stitch
     puts `#{exports.length() == 0 ? "" : exports.join(' && ') + ' &&'} \
         cd '#{stitch_dir}/etc/transpiler' && yarn install && yarn run build -t "#{TRANSPILER_TARGET}"`
 
+    puts "TRANSPILER SIZE"
+    puts `ls -l #{stitch_dir}/etc/transpiler/bin`
+
     exports << "export GOROOT=\"#{go_root}\""
     exports << "export PATH=\"$GOROOT/bin:$PATH\""
 
