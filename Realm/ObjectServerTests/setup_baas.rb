@@ -116,7 +116,6 @@ def setup_stitch
         cd '#{stitch_dir}/etc/transpiler' && yarn install && yarn run build -t "#{TRANSPILER_TARGET}"`
 
     exports << "export GOROOT=\"#{go_root}\""
-    exports << "export GOPATH=\"#{go_root}/src\""
     exports << "export PATH=\"$GOROOT/bin:$PATH\""
 
     exports << "export STITCH_PATH=\"#{stitch_dir}\""
