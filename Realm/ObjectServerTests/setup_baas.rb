@@ -63,6 +63,13 @@ def setup_stitch
     exports = []
     go_root = "#{BUILD_DIR}/go"
     puts `rm -rf {go_root}`
+    puts "build dir contents"
+    puts `cd #{BUILD_DIR} && ls -l`
+    puts "this dir contents"
+    puts `ls -l`
+    puts "10gen dir contents"
+    puts `ls -l #{go_root}/src/github.com/10gen`
+
     if !File.exists?("#{go_root}/bin/go")
         puts 'downloading go'
         `cd #{BUILD_DIR} && curl --silent "https://dl.google.com/go/go#{GO_VERSION}.darwin-amd64.tar.gz" | tar xz`
