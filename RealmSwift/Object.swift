@@ -700,7 +700,7 @@ internal class ObjectUtil {
 #if SWIFT_PACKAGE
         return "5.1"
 #else
-        return swiftLanguageVersion as NSString
+        return "5.0" as NSString
 #endif
     }
 
